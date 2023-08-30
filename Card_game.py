@@ -20,16 +20,18 @@ def main():
     print("Game starts!")
     shuffle_deck(deck_of_cards)
     print("Cards are splitted and shuffled")
+    player_deck, computer_deck = split_decks(deck_of_cards)
     input("Please enter to reveal cards...")
-
-    print(list(deck_of_cards[0].values())[0])
+    player_deck_after_reveal, computer_deck_after_reveal = card_reveal_duel(player_deck, computer_deck, winning_cards = [])
+    print(player_deck_after_reveal, computer_deck_after_reveal)
+    # print(list(deck_of_cards[0].values())[0])
 
 
 def shuffle_deck(deck):
     random.shuffle(deck)
 
 def split_decks(deck):
-    half_deck = len(deck) / 2
+    half_deck = int(len(deck) / 2)
     cnt = 0
     player_deck = []
     computer_deck = []
@@ -38,21 +40,38 @@ def split_decks(deck):
             player_deck.append(card)
         else:
             computer_deck.append(card)
-            cnt = + 1
+            cnt += 1
     return player_deck, computer_deck
 
-def card_reveal_duel(player_deck, computer_deck):
+def card_reveal_duel(player_deck, computer_deck, winning_cards = []):
     player_card = list(player_deck[0].values())[0]
     computer_card = list(computer_deck[0].values())[0]
-    player_deck[0].pop()
-    duel_cards = []
+    player_deck.pop(0)
+    computer_deck.pop(0)
+    # duel_cards = [player_card, computer_card]
+    winning_cards.append(player_card)
+    winning_cards.append(computer_card)
     if player_card == computer_card:
-        equal()
+        # equal(player_deck, computer_deck)
+        print("It's a tie! War is starting")
+        print(f"The cards are {player_card} and {computer_card}")
+        player_deck.pop(0)
+        computer_deck.pop(0)
+        card_reveal_duel(player_deck, computer_deck, winning_cards)
     elif player_card > computer_card:
-        victory(player_card)
+        # victory(player_card)
+        print("Player has won this round")
+        print(f"Player: {player_card} vs Computer: {computer_card}")
+        player_deck = player_deck + winning_cards
     elif player_card < computer_card:
+        print("Computer has won this round")
+        print(f"Player: {player_card} vs Computer: {computer_card}")
+        computer_deck = computer_deck + winning_cards
 
+    return player_deck, computer_deck
+    
 
+# def equal(player_deck, computer_deck):
 
 
 
